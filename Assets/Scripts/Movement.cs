@@ -3,7 +3,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private SpriteRenderer _sprite;
-    private UIMainMenu _uiMainMenu;
+    private UIPause _uiPause;
 
     [SerializeField] private float speed = 10;
     [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
@@ -13,14 +13,14 @@ public class Movement : MonoBehaviour
     
     private void Awake() 
     {
-        _uiMainMenu = FindObjectOfType<UIMainMenu>();
+        _uiPause = FindObjectOfType<UIPause>();
         _sprite = gameObject.GetComponent<SpriteRenderer>();
     }
     
     // Update is called once per frame
     void Update() 
     {
-        if (_uiMainMenu.IsActive())
+        if (_uiPause && _uiPause.IsActive())
         {
             return;
         }
