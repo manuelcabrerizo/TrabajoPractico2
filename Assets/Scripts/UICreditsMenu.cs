@@ -18,6 +18,6 @@ public class UICreditsMenu : UIMenu
 
     private void OnBackButtonClicked()
     {
-        uiPause.CloseCreditsMenu();
+        Pause.CloseCreditsMenu();
     }
 }

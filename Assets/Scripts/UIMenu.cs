@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class UIMenu : MonoBehaviour
 {
-    protected UIPause uiPause;
+    protected UIPauseManager Pause;
     
     public void Start()
     {
-        uiPause = FindObjectOfType<UIPause>();
+        Pause = FindObjectOfType<UIPauseManager>();
     }
 
 }

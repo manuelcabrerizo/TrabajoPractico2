@@ -27,19 +27,19 @@ public class UIMainMenu : UIMenu
     
     private void OnPlayButtonClicked()
     {
-        uiPause.CloseMainMenu();
+        Pause.CloseMainMenu();
     }
 
     private void OnSettingsButtonClicked()
     {
-        uiPause.CloseMainMenu();
-        uiPause.OpenSettingsMenu();
+        Pause.CloseMainMenu();
+        Pause.OpenSettingsMenu();
     }
     
     private void OnCreditsButtonClicked()
     {
-        uiPause.CloseMainMenu();
-        uiPause.OpenCreditsMenu();
+        Pause.CloseMainMenu();
+        Pause.OpenCreditsMenu();
     }
     
     private void OnExitButtonClicked()
