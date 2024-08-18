@@ -52,5 +52,6 @@ public class UISettingsMenu : UIMenu
     private void OnBackButtonClicked()
     {
         Pause.CloseSettingsMenu();
+        Pause.OpenMainMenu();
     }
 }

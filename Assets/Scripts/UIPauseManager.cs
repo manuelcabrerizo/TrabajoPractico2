@@ -31,12 +31,7 @@ public class UIPauseManager : MonoBehaviour
     {
         mainMenuPanel.SetActive(true);
     }
-
-    public void CloseMainMenu()
-    {
-        mainMenuPanel.SetActive(false);
-    }
-
+    
     public void OpenSettingsMenu()
     {
         settingsMenuPanel.SetActive(true);
@@ -45,6 +40,11 @@ public class UIPauseManager : MonoBehaviour
     public void OpenCreditsMenu()
     {
         creditsMenuPanel.SetActive(true);
+    }
+    
+    public void CloseMainMenu()
+    {   
+        mainMenuPanel.SetActive(false);
     }
 
     public void CloseSettingsMenu()

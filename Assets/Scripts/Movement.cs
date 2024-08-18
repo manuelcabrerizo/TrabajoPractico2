@@ -30,24 +30,28 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        Vector3 position = transform.position;    
+        Vector3 velocity = Vector3.zero;
         if(Input.GetKey(keyRight))
         {
-            position.x += _speed * Time.deltaTime;
+            velocity.x += 1;
         }
         if(Input.GetKey(keyLeft)) 
         {
-            position.x -= _speed * Time.deltaTime;
+            velocity.x -= 1;
         }
         if(Input.GetKey(keyUp)) 
         {
-            position.y += _speed * Time.deltaTime;
+            velocity.y += 1;
         }
         if(Input.GetKey(keyDown)) 
         {
-            position.y -= _speed * Time.deltaTime;
+            velocity.y -= 1;
         }
-        transform.position = position;
+
+        if (velocity.sqrMagnitude > 0)
+        {
+            transform.position += velocity.normalized * (_speed * Time.deltaTime);
+        }
 
         if(Input.GetKeyDown(KeyCode.Q)) 
         {

@@ -19,5 +19,6 @@ public class UICreditsMenu : UIMenu
     private void OnBackButtonClicked()
     {
         Pause.CloseCreditsMenu();
+        Pause.OpenMainMenu();
     }
 }
