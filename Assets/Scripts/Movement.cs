@@ -1,26 +1,32 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class Movement : MonoBehaviour
+public class Movement : Obstacle
 {
-    private SpriteRenderer _sprite;
     private UIPauseManager _pause;
     private float _speed = 10;
+    private float _cameraHalfHeight;
+
+    private float startXPos = 0;
+    private float currentHitAnimationTime = 0;
+    [SerializeField] private float hitAnimationTime = 0.25f;
+    [SerializeField] private float impulseMagnitude = 4;
+    [SerializeField] private float impulseSign = 1;
     
     [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
     [SerializeField] private KeyCode keyDown = KeyCode.DownArrow;
-    [SerializeField] private KeyCode keyLeft = KeyCode.LeftArrow;
-    [SerializeField] private KeyCode keyRight = KeyCode.RightArrow;
+    [SerializeField] private KeyCode keyAction = KeyCode.Space;
     
-    private void Awake() 
-    {
-        _sprite = gameObject.GetComponent<SpriteRenderer>();
-    }
-
     private void Start()
     {
         _pause = FindObjectOfType<UIPauseManager>();
+        
+        //  get the dimensions of the camera for bound checking
+        Camera currentCamera = FindObjectOfType<Camera>();
+        _cameraHalfHeight = currentCamera.orthographicSize;
+
+        startXPos = transform.position.x;
     }
 
     private void Update() 
@@ -30,45 +36,54 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        Vector3 velocity = Vector3.zero;
-        if(Input.GetKey(keyRight))
-        {
-            velocity.x += 1;
-        }
-        if(Input.GetKey(keyLeft)) 
-        {
-            velocity.x -= 1;
-        }
+        float direction = 0.0f;
         if(Input.GetKey(keyUp)) 
         {
-            velocity.y += 1;
+            direction += 1;
         }
         if(Input.GetKey(keyDown)) 
         {
-            velocity.y -= 1;
+            direction -= 1;
         }
 
-        if (velocity.sqrMagnitude > 0)
+        if (Input.GetKeyDown(keyAction) && currentHitAnimationTime == 0.0f)
         {
-            transform.position += velocity.normalized * (_speed * Time.deltaTime);
+            currentHitAnimationTime = hitAnimationTime;
         }
 
-        if(Input.GetKeyDown(KeyCode.Q)) 
+        if (currentHitAnimationTime > 0)
         {
-            transform.Rotate(Vector3.forward, 10.0f);
+            float halfTime = hitAnimationTime * 0.5f;
+            if (currentHitAnimationTime >= halfTime)
+            {
+                Velocity.x = impulseMagnitude * impulseSign;
+            }
+            else
+            {
+                Velocity.x = impulseMagnitude * -impulseSign;
+            }
+            currentHitAnimationTime -= Time.deltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.E)) 
+        else
         {
-            transform.Rotate(Vector3.forward, -10.0f);
+            Velocity.x = 0;
+            Vector2 pos = new Vector2(startXPos, transform.position.y);
+            transform.position = pos;
+            currentHitAnimationTime = 0.0f;
         }
-        if(Input.GetKeyUp(KeyCode.R)) 
-        {
-            _sprite.color = new Color(Random.Range(0.0f, 1.0f),  Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
-        }
+
+
+        Velocity.y = _speed * direction; 
+        float heightLimit = _cameraHalfHeight - (transform.localScale.y / 2.0f);
+        Vector2 position = transform.position;
+        position += Velocity * Time.deltaTime;
+        position.y = Math.Clamp(position.y, -heightLimit, heightLimit);
+        transform.position = position;
     }
 
     public void SetSpeed(float newSpeed)
     {
         _speed = newSpeed;
     }
+    
 }
