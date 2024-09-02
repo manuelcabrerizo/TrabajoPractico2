@@ -20,8 +20,9 @@ public class UISettingsMenu : UIMenu
     [SerializeField] private Movement player1;
     [SerializeField] private Movement player2;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         backButton.onClick.AddListener(OnBackButtonClicked);
         sliderPlayer1.onValueChanged.AddListener(OnPlayer1ValueChange);
         sliderPlayer2.onValueChanged.AddListener(OnPlayer2ValueChange);

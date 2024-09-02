@@ -10,8 +10,9 @@ public class UIMainMenu : UIMenu
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button exitButton;
     
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         playButton.onClick.AddListener(OnPlayButtonClicked);
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);
         creditsButton.onClick.AddListener(OnCreditsButtonClicked);
@@ -28,6 +29,7 @@ public class UIMainMenu : UIMenu
     
     private void OnPlayButtonClicked()
     {
+        Time.timeScale = 1.0f;
         Pause.CloseMainMenu();
     }
 

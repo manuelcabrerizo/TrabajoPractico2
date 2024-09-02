@@ -6,7 +6,7 @@ public class UIMenu : MonoBehaviour
 {
     protected UIPauseManager Pause;
     
-    public void Start()
+    public void Awake()
     {
         Pause = FindObjectOfType<UIPauseManager>();
     }

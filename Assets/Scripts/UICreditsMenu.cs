@@ -6,8 +6,9 @@ public class UICreditsMenu : UIMenu
     [Header("Credits menu buttons")]
     [SerializeField] private Button backButton;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         backButton.onClick.AddListener(OnBackButtonClicked);
     }
     

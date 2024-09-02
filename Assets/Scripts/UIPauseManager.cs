@@ -23,6 +23,7 @@ public class UIPauseManager : MonoBehaviour
             else
             {
                 OpenMainMenu();
+                Time.timeScale = 0.0f;
             }
         }
     }
@@ -62,6 +63,7 @@ public class UIPauseManager : MonoBehaviour
         CloseMainMenu();
         CloseSettingsMenu();
         CloseCreditsMenu();
+        Time.timeScale = 1.0f;
     }
 
     public bool IsActive()
