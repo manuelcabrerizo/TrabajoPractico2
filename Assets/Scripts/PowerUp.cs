@@ -15,14 +15,14 @@ public enum PowerUpType
 public class PowerUp : MonoBehaviour
 {
     public PowerUpType Type { get; set; }
+    [SerializeField] private LayerMask layerMask;
     
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Player"))
+        if ((layerMask.value & (1 << col.gameObject.layer)) > 0)
         {
             col.gameObject.SendMessage("GrabPowerUp", Type);
             gameObject.SetActive(false);
         }
     }
-    
 }
