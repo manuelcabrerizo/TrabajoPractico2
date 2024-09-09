@@ -85,6 +85,7 @@ public class PlayerShootPowerUpState : MonoBehaviour, IState
         // Check if the projectile still alive
         if (_spawnedProjectile.Obj.Index >= 0)
         {
+            // update the just spawn projectile to follow the player position
             Rigidbody2D projectileBody = _cachedPRigidbody2Ds[_spawnedProjectile.Obj.Index];
             projectileBody.velocity = new Vector2();
             Vector2 projectilePos = transform.position;
@@ -114,7 +115,11 @@ public class PlayerShootPowerUpState : MonoBehaviour, IState
         SpawnedProjectile projectile = _spawnProjectiles[^1];
         Rigidbody2D projectileBody = _cachedPRigidbody2Ds[projectile.Obj.Index];
         
+        // Predictable Projectiles
+        // here im getting the time when the projectile is going to hit the target given the projectile speed
         float t = GetTimeOfCollision(projectile.GetPosition(), projectileSpeed, target.transform.position, _targetRigidbody2DBody.velocity);
+        // with this time i can calculate the future position of the target and shoot in that direction
+        // The math to for the GetTimeCollision is shown in this video: https://www.youtube.com/watch?v=6OkhjWUIUf0&t=671s&ab_channel=GDC
         Vector2 shootPosition = target.transform.position;
         if (t >= 0.0f)
         {
