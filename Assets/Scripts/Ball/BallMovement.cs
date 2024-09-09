@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class BallMovement : MonoBehaviour
 {
+    [SerializeField] private float MaxSpeed = 50;
+    
     private Rigidbody2D _rigidbody2D;
 
     private void Awake()
@@ -17,6 +19,16 @@ public class BallMovement : MonoBehaviour
     {
         transform.position = new Vector2();
         _rigidbody2D.velocity = new Vector2();
+    }
+
+    private void Update()
+    {
+        Vector2 currentVelocity = _rigidbody2D.velocity;
+        if (currentVelocity.SqrMagnitude() > (MaxSpeed * MaxSpeed))
+        {
+            currentVelocity = currentVelocity.normalized * MaxSpeed;
+        }
+        _rigidbody2D.velocity = currentVelocity;
     }
 
     public void Reset()

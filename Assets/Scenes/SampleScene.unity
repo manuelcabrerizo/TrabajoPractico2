@@ -405,6 +405,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 239375656050969669, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5bf7783cc938f994ea105e992f57d467, type: 3}
+    - target: {fileID: 239375656050969669, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
@@ -10860,6 +10864,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1254043444}
     m_Modifications:
+    - target: {fileID: 1884034298040534874, guid: f73e611a2e0f6c8478805a6a22da918e, type: 3}
+      propertyPath: MaxSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7712305483329975153, guid: f73e611a2e0f6c8478805a6a22da918e, type: 3}
       propertyPath: m_Name
       value: Ball
