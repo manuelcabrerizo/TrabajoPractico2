@@ -25,9 +25,7 @@ public class PowerUpSpawner : MonoBehaviour
     private Color[] _colors =
     {
         Color.blue, 
-        Color.green, 
-        Color.magenta,
-        Color.red
+        Color.magenta
     };
 
     private PowerUp[] _cachedPowerUpComponents;
@@ -79,7 +77,7 @@ public class PowerUpSpawner : MonoBehaviour
             
             // Set a random Type
             PowerUp powerUpComponent = _cachedPowerUpComponents[poolObject.Index];
-            powerUpComponent.Type = PowerUpType.Shoot;// (PowerUpType)Random.Range(0, (int)PowerUpType.Count);
+            powerUpComponent.Type = (PowerUpType)Random.Range(0, (int)PowerUpType.Count);
             // Set the type color
             SpriteRenderer sprite = _cachedSpriteRendererComponent[poolObject.Index];
             sprite.color = _colors[(int)powerUpComponent.Type];
@@ -120,5 +118,16 @@ public class PowerUpSpawner : MonoBehaviour
             _cachedPowerUpComponents[i] = gameObjects[i].GetComponent<PowerUp>();
             _cachedSpriteRendererComponent[i] = gameObjects[i].GetComponent<SpriteRenderer>();
         }
+    }
+    
+    public void Clear()
+    {
+        _time = 0;
+        foreach (SpawnedPowerUp powerUp in _spawnPowerUps)
+        {
+            _powerUpPool.Free(powerUp.Obj);
+        }
+        _spawnPowerUps.Clear();
+        _toRemove.Clear();
     }
 }

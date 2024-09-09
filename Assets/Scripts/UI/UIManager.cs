@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private GameObject settingsMenuPanel;
     [SerializeField] private GameObject creditsMenuPanel;
+    [SerializeField] private GameObject gameOverMenuPanel;
     
     private void Awake()
     {
@@ -44,7 +45,12 @@ public class UIManager : MonoBehaviour
     {
         creditsMenuPanel.SetActive(true);
     }
-    
+
+    public void OpenGameOverMenu()
+    {
+        gameOverMenuPanel.SetActive(true);
+    }
+
     public void CloseMainMenu()
     {   
         mainMenuPanel.SetActive(false);
@@ -64,6 +70,10 @@ public class UIManager : MonoBehaviour
     {
         creditsMenuPanel.SetActive(false);
     }
+    public void CloseGameOverMenu()
+    {
+        gameOverMenuPanel.SetActive(false);
+    }
 
     public void CloseAll()
     {
@@ -71,6 +81,7 @@ public class UIManager : MonoBehaviour
         ClosePauseMenu();
         CloseSettingsMenu();
         CloseCreditsMenu();
+        CloseGameOverMenu();
     }
 
 }

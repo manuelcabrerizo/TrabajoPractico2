@@ -5,10 +5,13 @@ public class MainMenuState : IState
     public void Enter()
     {
         Time.timeScale = 0.0f;
+        GameManager.Instance.SetTextPlayerScoreActive(false);
+        GameManager.Instance.SetTextCountDownActive(false);
+        GameManager.Instance.SetBallActive(false);
         UIManager.Instance.OpenMainMenu();
     }
 
-    public void Update()
+    public void Process(float dt)
     {
     }
 

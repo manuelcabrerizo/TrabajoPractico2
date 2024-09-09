@@ -13,7 +13,7 @@ public class StateMachine
     {
        return _states.Peek();
     }
-
+    
     public void PushState(IState state)
     {
         state.Enter();
@@ -43,12 +43,12 @@ public class StateMachine
         }
     }
 
-    public void Update()
+    public void Update(float dt)
     {
         IState currentState = _states.Peek();
         if (currentState != null)
         {
-            currentState.Update();
+            currentState.Process(dt);
         }
     }
 

@@ -85,4 +85,15 @@ public class ObstacleSpawner : MonoBehaviour
         }
         _toRemove.Clear();
     }
+
+    public void Clear()
+    {
+        _time = 0;
+        foreach (SpawnedObstacle obstacle in _spawnObstacles)
+        {
+            _obstaclePools[obstacle.PoolIndex].Free(obstacle.Obj);
+        }
+        _spawnObstacles.Clear();
+        _toRemove.Clear();
+    }
 }

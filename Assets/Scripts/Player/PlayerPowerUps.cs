@@ -1,20 +1,18 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerPowerUps : MonoBehaviour
 {
-    [SerializeField] private float powerUpHeight = 4.0f;
     [SerializeField] private float heightTime = 15.0f;
     [SerializeField] private float shootTime = 15.0f;
-
-    private const float OriginalHeight = 2.0f;
-
+    
     private PlayerShoot _playerShoot;
+    private bool _heightPowerUpActive;
 
     private void Awake()
     {
         _playerShoot = GetComponent<PlayerShoot>();
+        _heightPowerUpActive = false;
     }
 
     private void GrabPowerUp(PowerUpType type)
@@ -27,27 +25,23 @@ public class PlayerPowerUps : MonoBehaviour
             } break;
             case PowerUpType.Shoot:
             {
-                StartCoroutine(ShootPowerUp());
+                _playerShoot.TryActivateShoot(shootTime);
             } break;
         }
     }
 
     private IEnumerator HeightPowerUp()
     {
-        Vector2 scale = transform.localScale;  
-        scale.y = powerUpHeight;
-        transform.localScale = scale;
-        yield return new WaitForSeconds(heightTime);
-        scale.y = OriginalHeight;
-        transform.localScale = scale;
+        if (!_heightPowerUpActive)
+        {
+            _heightPowerUpActive = true;
+            Vector2 scale = transform.localScale;
+            scale.y *= 1.5f;
+            transform.localScale = scale;
+            yield return new WaitForSeconds(heightTime);
+            scale.y /= 1.5f;
+            transform.localScale = scale;
+            _heightPowerUpActive = false;
+        }
     }
-
-    // TODO:  fix this powerup 
-    private IEnumerator ShootPowerUp()
-    {
-        _playerShoot.Active = true;
-        yield return new WaitForSeconds(shootTime);
-        _playerShoot.Active = false;
-    }
-
 }

@@ -33,7 +33,8 @@ public class UIPauseMenu : MonoBehaviour
 
     private void OnRestartButtonClicked()
     {
-        // TODO: ...
+        GameManager.Instance.StateMachine.ChangeState(GameManager.Instance.PlayState);
+        GameManager.Instance.StateMachine.PushState(GameManager.Instance.ScoreState);
     }
 
     private void OnSettingsButtonClicked()

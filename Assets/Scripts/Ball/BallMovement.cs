@@ -10,18 +10,16 @@ public class BallMovement : MonoBehaviour
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        Reset();
     }
-    
-    void Update()
+
+
+    public void Stop()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reset();
-        }
+        transform.position = new Vector2();
+        _rigidbody2D.velocity = new Vector2();
     }
-    
-    private void Reset()
+
+    public void Reset()
     {
         transform.position = new Vector2();
         _rigidbody2D.velocity = new Vector2();

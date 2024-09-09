@@ -12,6 +12,11 @@ public class PoolObject
     {
         Go.transform.position = pos;
     }
+
+    public Vector2 GetPosition()
+    {
+        return Go.transform.position;
+    }
 }
 
 // this class is an ObjectPool

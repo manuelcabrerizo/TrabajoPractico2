@@ -1,87 +1,122 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
+
+public class SpawnedProjectile
+{
+    public PoolObject Obj { get; set; }
+    public float Time { get; set; }
+    
+    public void SetPosition(Vector2 pos)
+    {
+        Obj.SetPosition(pos);
+    }
+
+    public Vector2 GetPosition()
+    {
+        return Obj.GetPosition();
+    }
+}
 
 public class PlayerShoot : MonoBehaviour
 {
-    public bool Active { get; set; }
-
-    [SerializeField] private float projectileSpeed = 20;
+    [SerializeField] private GameObject target;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float projectileSpeed = 20;
     [SerializeField] private KeyCode keyShoot = KeyCode.Space;
-
-    private bool _projectileShooted;
+    
+    private float _time;
     private PlayerMovement _movement;
     
-    [SerializeField] private GameObject target;
-    private GameObject _projectile;
-    private Rigidbody2D _projectileBody;
-    private Rigidbody2D _targetBody;
+    private ObjectPool _projectilePool;
+    private List<SpawnedProjectile> _spawnProjectiles;
+    private List<SpawnedProjectile> _toRemove;
+    
+    private Rigidbody2D _targetRigidbody2DBody;
+    private Rigidbody2D[] _cachedPRigidbody2Ds;
 
-    private CircleCollider2D _projectileCollider;
-    private PlayerPowerUps _powerUps;
+
 
     private void Awake()
     {
+        _time = 0.0f;
         _movement = GetComponent<PlayerMovement>();
-        _projectileShooted = false;
-        _projectile = Instantiate(projectilePrefab);
-        _projectile.SetActive(false);
-        _projectileBody = _projectile.GetComponent<Rigidbody2D>();
-        _projectileCollider = _projectile.GetComponent<CircleCollider2D>();
-        _targetBody = target.GetComponent<Rigidbody2D>();
-        _powerUps = GetComponent<PlayerPowerUps>();
+        
+        _projectilePool = GetComponent<ObjectPool>();
+        _spawnProjectiles = new List<SpawnedProjectile>();
+        _toRemove = new List<SpawnedProjectile>();
+        
+        _targetRigidbody2DBody = target.GetComponent<Rigidbody2D>();
     }
     
-    private void OnDestroy()
-    {
-        Destroy(_projectile);
+    private void Start()
+    {       
+        // store all the Rigidbody2D components
+        // so i dont have to get them every time i spawn a new projectile
+        CacheComponents();
     }
-
+    
     private void Update()
     {
-        if (!Active)
-        {
-            _projectileShooted = false;
-            _projectile.SetActive(false);
-            return;
-        }
-        
-        if (!_projectileShooted)
+        if (_time > 0.0f)
         {
             UpdateProjectileBeforeShoot();
+            if (Input.GetKeyDown(keyShoot))
+            {
+                Shoot();
+            }
         }
         
-        if (Input.GetKeyDown(keyShoot) && !_projectileShooted)
-        {
-            Shoot();
-        }
+        RemoveDeadProjectiles();
+        
+        _time = Math.Max(_time - Time.deltaTime, 0);
     }
 
     private void UpdateProjectileBeforeShoot()
     {
-        _projectile.SetActive(true);
-        _projectileBody.velocity = new Vector2();
+        SpawnedProjectile projectile = _spawnProjectiles[^1];
+        Rigidbody2D projectileBody = _cachedPRigidbody2Ds[projectile.Obj.Index];
+        projectileBody.velocity = new Vector2();
         Vector2 projectilePos = transform.position;
         projectilePos.x += 0.65f * _movement.ImpulseSign;
-        _projectile.transform.position = projectilePos;
-        _projectileCollider.enabled = false;   
+        projectile.SetPosition(projectilePos);
     }
-
+    
     private void Shoot()
     {
+        _time = 0.0f;
         // shoot the projectile to the ball
-        _projectileShooted = true;
-        float t = GetTimeOfCollision(_projectile.transform.position, projectileSpeed, target.transform.position, _targetBody.velocity);
+        SpawnedProjectile projectile = _spawnProjectiles[^1];
+        Rigidbody2D projectileBody = _cachedPRigidbody2Ds[projectile.Obj.Index];
+        
+        float t = GetTimeOfCollision(projectile.GetPosition(), projectileSpeed, target.transform.position, _targetRigidbody2DBody.velocity);
         Vector2 shootPosition = target.transform.position;
         if (t >= 0.0f)
         {
-            shootPosition = (Vector2)target.transform.position + _targetBody.velocity * t;
+            shootPosition = (Vector2)target.transform.position + _targetRigidbody2DBody.velocity * t;
         }
-        Vector2 shootDirection = (shootPosition - (Vector2)_projectile.transform.position).normalized;
-        _projectileBody.velocity = shootDirection * projectileSpeed;
-        _projectileCollider.enabled = true;
+        Vector2 shootDirection = (shootPosition - (Vector2)projectile.GetPosition()).normalized;
+        projectileBody.velocity = shootDirection * projectileSpeed;
     }
+
+    public void TryActivateShoot(float time)
+    {
+        if (_time <= 0.0f)
+        {
+            PoolObject poolObject = _projectilePool.Alloc();
+            if (poolObject != null)
+            {
+                _time = time;
+                SpawnedProjectile projectile = new SpawnedProjectile();
+                projectile.Obj = poolObject;
+                projectile.Time = time;
+                _spawnProjectiles.Add(projectile);
+            }
+        }
+    }
+
+
 
     private float GetTimeOfCollision(Vector2 aPos, float aSpeed, Vector2 bPos, Vector2 bVel)
     {
@@ -136,5 +171,37 @@ public class PlayerShoot : MonoBehaviour
             }
         }
         return t;
+    }
+    
+    private void RemoveDeadProjectiles()
+    {
+        foreach (SpawnedProjectile projectile in _spawnProjectiles)
+        {
+            if (projectile.Time <= 0)
+            {
+                _toRemove.Add(projectile);
+            }
+            else
+            {
+                projectile.Time -= Time.deltaTime;
+            }
+        }
+
+        foreach (SpawnedProjectile projectile in _toRemove)
+        {
+            _projectilePool.Free(projectile.Obj);
+            _spawnProjectiles.Remove(projectile);
+        }
+        _toRemove.Clear();
+    }
+    
+    void CacheComponents()
+    {
+        GameObject[] gameObjects = _projectilePool.GetGameObjects();
+        _cachedPRigidbody2Ds = new Rigidbody2D[gameObjects.Length];
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            _cachedPRigidbody2Ds[i] = gameObjects[i].GetComponent<Rigidbody2D>();
+        }
     }
 }
