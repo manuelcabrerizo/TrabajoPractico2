@@ -14,6 +14,7 @@ public class PlayState : IState
         GameManager.Instance.SetTextPlayerScoreActive(true);
         GameManager.Instance.SetBallActive(true);
         GameManager.Instance.ResetObjectsForNewGame();
+        GameManager.Instance.ResetPlayerPowerUps();
     }
 
     public void Process(float dt)
@@ -26,6 +27,7 @@ public class PlayState : IState
 
     public void Exit()
     {
+        GameManager.Instance.ResetPlayerPowerUps();
         GameManager.Instance.ResetObjectsForNewGame();
         GameManager.Instance.SetBallActive(false);
     }

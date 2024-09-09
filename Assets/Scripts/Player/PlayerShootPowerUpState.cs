@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SpawnedProjectile
@@ -19,29 +18,31 @@ public class SpawnedProjectile
     }
 }
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShootPowerUpState : MonoBehaviour, IState
 {
+    [SerializeField] private float duration = 4;
+    private float _time = 0;
+    
     [SerializeField] private GameObject target;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float projectileSpeed = 20;
     [SerializeField] private KeyCode keyShoot = KeyCode.Space;
     
-    private float _time;
-    private PlayerMovement _movement;
+    private PlayerPowerUps _playerPowerUps;
+    private PlayerMovement _playerMovement;
     
     private ObjectPool _projectilePool;
+    private SpawnedProjectile _spawnedProjectile;
     private List<SpawnedProjectile> _spawnProjectiles;
     private List<SpawnedProjectile> _toRemove;
     
     private Rigidbody2D _targetRigidbody2DBody;
     private Rigidbody2D[] _cachedPRigidbody2Ds;
 
-
-
     private void Awake()
     {
-        _time = 0.0f;
-        _movement = GetComponent<PlayerMovement>();
+        _playerPowerUps = GetComponent<PlayerPowerUps>();
+        _playerMovement = GetComponent<PlayerMovement>();
         
         _projectilePool = GetComponent<ObjectPool>();
         _spawnProjectiles = new List<SpawnedProjectile>();
@@ -56,36 +57,59 @@ public class PlayerShoot : MonoBehaviour
         // so i dont have to get them every time i spawn a new projectile
         CacheComponents();
     }
-    
+
     private void Update()
     {
-        if (_time > 0.0f)
+        RemoveDeadProjectiles();
+    }
+
+    public void Enter()
+    {
+        PoolObject poolObject = _projectilePool.Alloc();
+        if (poolObject != null)
         {
-            UpdateProjectileBeforeShoot();
+            _spawnedProjectile = new SpawnedProjectile();
+            _spawnedProjectile.Obj = poolObject;
+            _spawnedProjectile.Time = duration;
+            _spawnProjectiles.Add(_spawnedProjectile);
+            _time = duration;
+        }
+        else
+        {
+            _playerPowerUps.PowerUpsStateMachine.PopState();
+        }
+    }
+
+    public void Process(float dt)
+    {
+        // Check if the projectile still alive
+        if (_spawnedProjectile.Obj.Index >= 0)
+        {
+            Rigidbody2D projectileBody = _cachedPRigidbody2Ds[_spawnedProjectile.Obj.Index];
+            projectileBody.velocity = new Vector2();
+            Vector2 projectilePos = transform.position;
+            projectilePos.x += 0.65f * _playerMovement.ImpulseSign;
+            _spawnedProjectile.SetPosition(projectilePos);
             if (Input.GetKeyDown(keyShoot))
             {
                 Shoot();
+                _playerPowerUps.PowerUpsStateMachine.PopState();
             }
         }
-        
-        RemoveDeadProjectiles();
-        
-        _time = Math.Max(_time - Time.deltaTime, 0);
+
+        if (_time <= 0)
+        {
+            _playerPowerUps.PowerUpsStateMachine.PopState();
+        }
+        _time -= dt;
     }
 
-    private void UpdateProjectileBeforeShoot()
+    public void Exit()
     {
-        SpawnedProjectile projectile = _spawnProjectiles[^1];
-        Rigidbody2D projectileBody = _cachedPRigidbody2Ds[projectile.Obj.Index];
-        projectileBody.velocity = new Vector2();
-        Vector2 projectilePos = transform.position;
-        projectilePos.x += 0.65f * _movement.ImpulseSign;
-        projectile.SetPosition(projectilePos);
     }
     
     private void Shoot()
     {
-        _time = 0.0f;
         // shoot the projectile to the ball
         SpawnedProjectile projectile = _spawnProjectiles[^1];
         Rigidbody2D projectileBody = _cachedPRigidbody2Ds[projectile.Obj.Index];
@@ -99,25 +123,7 @@ public class PlayerShoot : MonoBehaviour
         Vector2 shootDirection = (shootPosition - (Vector2)projectile.GetPosition()).normalized;
         projectileBody.velocity = shootDirection * projectileSpeed;
     }
-
-    public void TryActivateShoot(float time)
-    {
-        if (_time <= 0.0f)
-        {
-            PoolObject poolObject = _projectilePool.Alloc();
-            if (poolObject != null)
-            {
-                _time = time;
-                SpawnedProjectile projectile = new SpawnedProjectile();
-                projectile.Obj = poolObject;
-                projectile.Time = time;
-                _spawnProjectiles.Add(projectile);
-            }
-        }
-    }
-
-
-
+    
     private float GetTimeOfCollision(Vector2 aPos, float aSpeed, Vector2 bPos, Vector2 bVel)
     {
         Vector2 x0p = aPos;

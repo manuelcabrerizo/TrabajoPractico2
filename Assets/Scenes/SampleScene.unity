@@ -392,6 +392,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1254043444}
     m_Modifications:
+    - target: {fileID: -4853008165042775338, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 2505707148420218959}
+    - target: {fileID: -4853008165042775338, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: duration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -2159117367857409203, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: duration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 239375656050969669, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -444,14 +456,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6385985188537719850, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 2505707148420218959}
-    - target: {fileID: 6385985188537719850, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
-      propertyPath: traget
-      value: 
-      objectReference: {fileID: 2505707148420218959}
     - target: {fileID: 6684964583786085049, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
       propertyPath: m_Size.x
       value: 0.2528546
@@ -6873,6 +6877,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1254043444}
     m_Modifications:
+    - target: {fileID: -4853008165042775338, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 2505707148420218959}
+    - target: {fileID: -4853008165042775338, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: duration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -4853008165042775338, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: keyShoot
+      value: 303
+      objectReference: {fileID: 0}
+    - target: {fileID: -2159117367857409203, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
+      propertyPath: duration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 239375656050969669, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -6941,14 +6961,6 @@ PrefabInstance:
       propertyPath: impulseSign
       value: -1
       objectReference: {fileID: 0}
-    - target: {fileID: 6385985188537719850, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 2505707148420218959}
-    - target: {fileID: 6385985188537719850, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
-      propertyPath: traget
-      value: 
-      objectReference: {fileID: 2505707148420218959}
     - target: {fileID: 6684964583786085049, guid: b198bac8bb84ddd449361dddec98a11b, type: 3}
       propertyPath: m_Size.x
       value: 0.25380826
@@ -10194,7 +10206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618a8eb23e161fe4f9aea019dd735a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToSpawn: 10
+  timeToSpawn: 6
   lifeTime: 6
   player1: {fileID: 1084624510}
   player2: {fileID: 903076254}

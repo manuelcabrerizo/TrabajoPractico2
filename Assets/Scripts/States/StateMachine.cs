@@ -13,7 +13,12 @@ public class StateMachine
     {
        return _states.Peek();
     }
-    
+
+    public bool IsEmpty()
+    {
+        return _states.Count == 0;
+    }
+
     public void PushState(IState state)
     {
         state.Enter();

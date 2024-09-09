@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textCountDown;
 
     private SpriteRenderer _ballSpriteRenderer;
+    private PlayerPowerUps _player1PowerUps;
+    private PlayerPowerUps _player2PowerUps;
     
     private void Awake()
     {
@@ -58,6 +60,8 @@ public class GameManager : MonoBehaviour
         _winState = new WinState();
 
         _ballSpriteRenderer = ball.GetComponent<SpriteRenderer>();
+        _player1PowerUps = player1.GetComponent<PlayerPowerUps>();
+        _player2PowerUps = player2.GetComponent<PlayerPowerUps>();
 
     }
 
@@ -124,6 +128,12 @@ public class GameManager : MonoBehaviour
     public void ResetBall()
     {
         ball.Reset();
+    }
+
+    public void ResetPlayerPowerUps()
+    {
+        _player1PowerUps.PowerUpsStateMachine.Clear();
+        _player2PowerUps.PowerUpsStateMachine.Clear();
     }
 
 }

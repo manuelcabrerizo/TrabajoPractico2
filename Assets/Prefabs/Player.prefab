@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 6684964583786085049}
   - component: {fileID: 1499473292109637136}
   - component: {fileID: 5865638412541146922}
-  - component: {fileID: 6385985188537719850}
   - component: {fileID: -1466259544059048753}
+  - component: {fileID: -2159117367857409203}
+  - component: {fileID: -4853008165042775338}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -174,8 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d747601730a3a4795cdf205a226a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightTime: 10
-  shootTime: 8
 --- !u!114 &5865638412541146922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,22 +195,6 @@ MonoBehaviour:
   keyUp: 119
   keyDown: 115
   keyAction: 100
---- !u!114 &6385985188537719850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8813859585747038961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d23bcce845f5034baa474e75d41b80b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  projectilePrefab: {fileID: 6905618209929371007, guid: e6265b02065838d4abcc746d26bd99af, type: 3}
-  projectileSpeed: 20
-  keyShoot: 32
 --- !u!114 &-1466259544059048753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,3 +209,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCout: 2
   prefab: {fileID: 6905618209929371007, guid: e6265b02065838d4abcc746d26bd99af, type: 3}
+--- !u!114 &-2159117367857409203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8813859585747038961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417ac8fee687e29429c263a67ad8f6bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 15
+--- !u!114 &-4853008165042775338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8813859585747038961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064b049028f489341bf5c6cb7c6df9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 15
+  target: {fileID: 0}
+  projectilePrefab: {fileID: 6905618209929371007, guid: e6265b02065838d4abcc746d26bd99af, type: 3}
+  projectileSpeed: 20
+  keyShoot: 32
