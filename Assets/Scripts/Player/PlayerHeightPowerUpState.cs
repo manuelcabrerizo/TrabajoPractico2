@@ -5,6 +5,7 @@ public class PlayerHeightPowerUpState : MonoBehaviour, IState
     private PlayerPowerUps _playerPowerUps;
 
     [SerializeField] private float duration = 15;
+    [SerializeField] private float HeightMultiplyer = 2;
     private float _time = 0;
 
     private void Awake()
@@ -15,7 +16,7 @@ public class PlayerHeightPowerUpState : MonoBehaviour, IState
     public void Enter()
     {
         Vector2 scale = transform.localScale;
-        scale.y *= 2;
+        scale.y *= HeightMultiplyer;
         transform.localScale = scale;
 
         _time = duration;
@@ -33,7 +34,7 @@ public class PlayerHeightPowerUpState : MonoBehaviour, IState
     public void Exit()
     {
         Vector2 scale = transform.localScale;
-        scale.y /= 2;
+        scale.y /= HeightMultiplyer;
         transform.localScale = scale;
     }
 }

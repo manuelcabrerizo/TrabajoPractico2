@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 15
-  target: {fileID: 0}
+  target: {fileID: 7712305483329975153, guid: f73e611a2e0f6c8478805a6a22da918e, type: 3}
   projectilePrefab: {fileID: 6905618209929371007, guid: e6265b02065838d4abcc746d26bd99af, type: 3}
   projectileSpeed: 20
   keyShoot: 32
